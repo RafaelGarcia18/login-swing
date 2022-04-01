@@ -5,6 +5,9 @@
  */
 package login.swing.boundary;
 
+import java.awt.Color;
+import login.swing.controller.FrmLogin;
+
 /**
  *
  * @author rafael
@@ -18,6 +21,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
     }
+    private FrmLogin controlador = new FrmLogin();
+    private Successfull pantalla = new Successfull();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,6 +44,7 @@ public class Login extends javax.swing.JFrame {
         lblMensajes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
         setBackground(new java.awt.Color(254, 254, 254));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -78,14 +84,22 @@ public class Login extends javax.swing.JFrame {
         txtCorreo.setBackground(new java.awt.Color(254, 254, 254));
         txtCorreo.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtCorreo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtCorreo.setToolTipText("Escriba aqui su correo electronico");
 
         pswContraseña.setBackground(new java.awt.Color(254, 254, 254));
         pswContraseña.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        pswContraseña.setToolTipText("Ingrese su contraseña aqui");
 
         btnIngresar.setBackground(new java.awt.Color(47, 174, 220));
         btnIngresar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         btnIngresar.setForeground(new java.awt.Color(254, 254, 254));
         btnIngresar.setText("Ingresar");
+        btnIngresar.setToolTipText("Ingresar al sistema");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
 
         lblMensajes.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         lblMensajes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -138,6 +152,31 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void resetFrm() {
+        txtCorreo.setText("");
+        pswContraseña.setText("");
+        lblMensajes.setText("");
+    }
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        if (controlador.validateEmail(txtCorreo.getText())) {
+            if (controlador.verify(txtCorreo.getText(), pswContraseña.getText())) {
+                resetFrm();
+                lblMensajes.setText("Correcto");
+                lblMensajes.setForeground(Color.GREEN);
+                pantalla.setVisible(true);
+            } else {
+                resetFrm();
+                lblMensajes.setText("Contraseña invalida");
+                lblMensajes.setForeground(Color.red);
+            }
+        } else {
+            resetFrm();
+            lblMensajes.setText("No es un correo valido");
+            lblMensajes.setForeground(Color.red);
+        }
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
      * @param args the command line arguments
